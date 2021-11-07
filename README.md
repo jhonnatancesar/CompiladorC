@@ -1,9 +1,9 @@
-# Compiladores
+# Compiladores GRUPO 1
 
-Utilização do Programa ;)
+Utilização do Programa.
 
 ```console
 $ make clean
 $ make 
-$ ./marco-interp exemplos/soma.c
+$ ./interpretador
 ```
