@@ -1,0 +1,29 @@
+//Exemplo Program e blocos
+program Nome_do_Programa;
+Label
+Uses
+Variable
+Type
+Constant
+begin
+comandos a serem executados;
+end.
+
+//Exemplo de Comandos
+//Goto
+goto Label;
+
+//atribuir
+assing nome_da_variavel = expressao;
+
+//While
+while expressao do {Lista de Comandos;}
+
+//For
+for expressao {lista de comandos;}
+
+//if
+if expressao then {lista de comandos;} else {lista de comandos;}
+
+//Output
+Write expressao;
