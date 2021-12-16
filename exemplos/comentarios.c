@@ -1,7 +1,8 @@
 /*
-  Um exemplo de código.
+  Interpretador Limpando...
 */
 
+// Comentários.
 10 a=0
 20 if a .gt. 15 goto 60
 30 imprime a
