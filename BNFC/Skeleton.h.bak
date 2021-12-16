@@ -20,9 +20,9 @@ void visitConstant(Constant p);
 void visitCmdlist(Cmdlist p);
 void visitCmd(Cmd p);
 void visitCmd_type(Cmd_type p);
+void visitExprecion(Exprecion p);
 void visitExp(Exp p);
 void visitProcedure(Procedure p);
-void visitAssignment_op(Assignment_op p);
 
 void visitUnsigned(Unsigned p);void visitLong(Long p);void visitUnsignedLong(UnsignedLong p);void visitHexadecimal(Hexadecimal p);void visitHexUnsigned(HexUnsigned p);void visitHexLong(HexLong p);void visitHexUnsLong(HexUnsLong p);void visitOctal(Octal p);void visitOctalUnsigned(OctalUnsigned p);void visitOctalLong(OctalLong p);void visitOctalUnsLong(OctalUnsLong p);void visitCDouble(CDouble p);void visitCFloat(CFloat p);void visitCLongDouble(CLongDouble p);
 void visitIdent(Ident i);

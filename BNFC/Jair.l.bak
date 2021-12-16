@@ -80,12 +80,12 @@ IDENT [a-zA-Z0-9'_]
 <INITIAL>"{"      	 return _LBRACE;
 <INITIAL>","      	 return _COMMA;
 <INITIAL>"}"      	 return _RBRACE;
-<INITIAL>"="      	 return _EQ;
+<INITIAL>":"      	 return _COLON;
 <INITIAL>"};"      	 return _SYMB_6;
+<INITIAL>"="      	 return _EQ;
 <INITIAL>"["      	 return _LBRACK;
 <INITIAL>"]"      	 return _RBRACK;
 <INITIAL>"?"      	 return _QUESTION;
-<INITIAL>":"      	 return _COLON;
 <INITIAL>"||"      	 return _DBAR;
 <INITIAL>"&&"      	 return _DAMP;
 <INITIAL>"|"      	 return _BAR;

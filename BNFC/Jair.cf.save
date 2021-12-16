@@ -1,4 +1,3 @@
-
 --definicição program
 Program.        Prog                  ::= "program" Ident ";" Dec;
 
@@ -17,7 +16,7 @@ Label.		Label                 ::= Ident;
 Uses.           Uses                  ::= Ident "{" "," Ident "}" ";";
 
 --definição var
-Variable.       Variable              ::= Ident "=" Type ";";
+Variable.       Variable              ::= Ident ":" Type ";";
 
 --definição tipos
 Type.           Type		      ::= Type_specifier ;
@@ -32,46 +31,23 @@ Constant.       Constant              ::= "number" ";";
 Cmdlist.        Cmdlist               ::= Cmd "{" Cmd "};";
 Cmd.            Cmd                   ::= Cmd_type;
 Cmd_goto.	Cmd_type              ::= "goto" Label;
-Cmd_assign.     Cmd_type              ::= "assign" Variable "=" Exp;
-Cmd_while.      Cmd_type              ::= "while" Exp "do" Cmdlist;
-Cmd_for.        Cmd_type              ::= "for" Exp Cmdlist;
-Cmd_if.         Cmd_type              ::= "if" Exp "then" Cmdlist "[" "else" Cmdlist "]";
-Cmd_output.     Cmd_type              ::= "Write" Exp;
+Cmd_assign.     Cmd_type              ::= "assign" Variable "=" Exprecion;
+Cmd_while.      Cmd_type              ::= "while" Exprecion "do" Cmdlist;
+Cmd_for.        Cmd_type              ::= "for" Exprecion Cmdlist;
+Cmd_if.         Cmd_type              ::= "if" Exprecion "then" Cmdlist "[" "else" Cmdlist "]";
+Cmd_output.     Cmd_type              ::= "Write" Exprecion;
 
 --definição expreções
-Ecomma.      Exp   ::= Exp "," Exp2;
-Eassign.     Exp2  ::= Exp14 Assignment_op Exp2;
-Econdition.  Exp3  ::= Exp4 "?" Exp ":" Exp3;
-Elor.        Exp4  ::= Exp4 "||" Exp5;
-Eland.       Exp5  ::= Exp5 "&&" Exp6;
-Ebitor.      Exp6  ::= Exp6 "|" Exp7;
-Ebitexor.    Exp7  ::= Exp7 "^" Exp8;
-Ebitand.     Exp8  ::= Exp8 "&" Exp9;
-Eeq.         Exp9  ::= Exp9 "==" Exp10;
-Eneq.        Exp9  ::= Exp9 "!=" Exp10;
-Elthen.      Exp10 ::= Exp10 "<" Exp11;
-Egrthen.     Exp10 ::= Exp10 ">" Exp11;
-Ele.         Exp10 ::= Exp10 "<=" Exp11;
-Ege.         Exp10 ::= Exp10 ">=" Exp11;
-Eleft.       Exp11 ::= Exp11 "<<" Exp12;
-Eright.      Exp11 ::= Exp11 ">>" Exp12;
-Eplus.       Exp12 ::= Exp12 "+" Exp13;
-Eminus.      Exp12 ::= Exp12 "-" Exp13;
-Etimes.      Exp13 ::= Exp13 "*" Exp14;
-Ediv.        Exp13 ::= Exp13 "/" Exp14;
-Emod.        Exp13 ::= Exp13 "%" Exp14;
-Epreinc.     Exp14 ::= "++" Exp14;
-Epredec.     Exp14 ::= "--" Exp14;
-Earray.      Exp15 ::= Exp15 "[" Exp "]" ;
-Efunk.       Exp15 ::= Exp15 "(" ")";
-Efunkpar.    Exp15 ::= Exp15 "(" Exp2 ")";
-Eselect.     Exp15 ::= Exp15 "." Ident;
-Epoint.      Exp15 ::= Exp15 "->" Ident;
-Epostinc.    Exp15 ::= Exp15 "++";
-Epostdec.    Exp15 ::= Exp15 "--";
-Evar.        Exp16 ::= Ident;
-Econst.      Exp16 ::= Constant;
-Estring.     Exp16 ::= String;
+Expeq.		Exp		      ::= Exp "==" Exp2;
+Expenq.		Exp		      ::= Exp "<>" Exp2;
+Expmaior.	Exp2		      ::= Exp2 ">" Exp2;
+Expmenor.	Exp2		      ::= Exp2 "<" Exp2;
+Expmaioreq.	Exp2		      ::= Exp2 ">=" Exp2;
+Expmenoreq.	Exp2		      ::= Exp2 "<=" Exp2;
+Expadd.		Exp3		      ::= Exp3 "+" Exp4;
+Expsub.		Exp3		      ::= Exp3 "-" Exp4;
+Expmult.	Exp4		      ::= Exp4 "*" Exp3;
+Expdiv.		Exp4		      ::= Exp4 "/" Exp3;
 
 --Token
 token Unsigned ["123456789"] digit * ('u'|'U');
@@ -108,21 +84,6 @@ token CLongDouble (((digit+ '.' digit+)|(digit+ '.')|('.' digit+))(('e'|'E')('-'
 --definição procedure
 Funtion.	Procedure	      ::= "Procedure" Ident "(" Variable ")" "begin" Cmdlist "end.";
 
-
-Assign.       Assignment_op ::= "=" ;
-AssignMul.    Assignment_op ::= "*=" ;
-AssignDiv.    Assignment_op ::= "/=" ;
-AssignMod.    Assignment_op ::= "%=" ;
-AssignAdd.    Assignment_op ::= "+=" ;
-AssignSub.    Assignment_op ::= "-=" ;
-AssignLeft.   Assignment_op ::= "<<=" ;
-AssignRight.  Assignment_op ::= ">>=" ;
-AssignAnd.    Assignment_op ::= "&=" ;
-AssignXor.    Assignment_op ::= "^=" ;
-AssignOr.     Assignment_op ::= "|=" ;
-
-
 --comentario
 comment "//";
 comment "/*" "*/";
-

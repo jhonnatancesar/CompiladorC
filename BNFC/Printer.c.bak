@@ -466,7 +466,7 @@ void ppVariable(Variable p, int _i_)
   case is_Variable:
     if (_i_ > 0) renderC(_L_PAREN);
     ppIdent(p->u.variable_.ident_, 0);
-    renderC('=');
+    renderC(':');
     ppType(p->u.variable_.type_, 0);
     renderC(';');
     if (_i_ > 0) renderC(_R_PAREN);

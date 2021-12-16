@@ -145,42 +145,85 @@ extern int yydebug;
   enum yytokentype
   {
     _ERROR_ = 258,
-    _LPAREN = 259,
-    _RPAREN = 260,
-    _COMMA = 261,
-    _SEMI = 262,
-    _LT = 263,
-    _LDARROW = 264,
-    _LTGT = 265,
-    _EQ = 266,
-    _DEQ = 267,
-    _GT = 268,
-    _GTEQ = 269,
-    _KW_Output = 270,
-    _KW_Procedure = 271,
-    _LBRACK = 272,
-    _RBRACK = 273,
-    _KW_assign = 274,
-    _KW_begin = 275,
-    _KW_digit = 276,
-    _KW_do = 277,
-    _KW_double = 278,
-    _KW_else = 279,
-    _SYMB_1 = 280,
-    _KW_float = 281,
-    _KW_for = 282,
-    _KW_goto = 283,
-    _KW_if = 284,
-    _KW_int = 285,
-    _KW_letter = 286,
-    _KW_number = 287,
-    _KW_program = 288,
-    _KW_then = 289,
-    _KW_while = 290,
-    _LBRACE = 291,
-    _RBRACE = 292,
-    _SYMB_6 = 293,
-    _IDENT_ = 294
+    _BANGEQ = 259,
+    _PERCENT = 260,
+    _PERCENTEQ = 261,
+    _AMP = 262,
+    _DAMP = 263,
+    _AMPEQ = 264,
+    _LPAREN = 265,
+    _RPAREN = 266,
+    _STAR = 267,
+    _STAREQ = 268,
+    _PLUS = 269,
+    _DPLUS = 270,
+    _PLUSEQ = 271,
+    _COMMA = 272,
+    _MINUS = 273,
+    _DMINUS = 274,
+    _MINUSEQ = 275,
+    _RARROW = 276,
+    _DOT = 277,
+    _SLASH = 278,
+    _SLASHEQ = 279,
+    _COLON = 280,
+    _SEMI = 281,
+    _LT = 282,
+    _DLT = 283,
+    _DLTEQ = 284,
+    _LDARROW = 285,
+    _EQ = 286,
+    _DEQ = 287,
+    _GT = 288,
+    _GTEQ = 289,
+    _DGT = 290,
+    _DGTEQ = 291,
+    _QUESTION = 292,
+    _KW_Procedure = 293,
+    _KW_Write = 294,
+    _LBRACK = 295,
+    _RBRACK = 296,
+    _CARET = 297,
+    _CARETEQ = 298,
+    _KW_assign = 299,
+    _KW_begin = 300,
+    _KW_digit = 301,
+    _KW_do = 302,
+    _KW_double = 303,
+    _KW_else = 304,
+    _SYMB_1 = 305,
+    _KW_float = 306,
+    _KW_for = 307,
+    _KW_goto = 308,
+    _KW_if = 309,
+    _KW_int = 310,
+    _KW_letter = 311,
+    _KW_number = 312,
+    _KW_program = 313,
+    _KW_then = 314,
+    _KW_while = 315,
+    _LBRACE = 316,
+    _BAR = 317,
+    _BAREQ = 318,
+    _DBAR = 319,
+    _RBRACE = 320,
+    _SYMB_6 = 321,
+    T_CDouble = 322,
+    T_CFloat = 323,
+    T_CLongDouble = 324,
+    T_HexLong = 325,
+    T_HexUnsLong = 326,
+    T_HexUnsigned = 327,
+    T_Hexadecimal = 328,
+    T_Long = 329,
+    T_Octal = 330,
+    T_OctalLong = 331,
+    T_OctalUnsLong = 332,
+    T_OctalUnsigned = 333,
+    T_Unsigned = 334,
+    T_UnsignedLong = 335,
+    _STRING_ = 336,
+    _IDENT_ = 337
   };
 #endif
 
@@ -207,11 +250,11 @@ union YYSTYPE
   Cmdlist cmdlist_;
   Cmd cmd_;
   Cmd_type cmd_type_;
-  Exprecion exprecion_;
   Exp exp_;
   Procedure procedure_;
+  Assignment_op assignment_op_;
 
-#line 215 "Jair.tab.c"
+#line 258 "Jair.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -252,7 +295,7 @@ int yyparse(yyscan_t scanner, YYSTYPE *result);
 
 extern int yylex(YYSTYPE *lvalp, YYLTYPE *llocp, yyscan_t scanner);
 
-#line 256 "Jair.tab.c"
+#line 299 "Jair.tab.c"
 
 
 #ifdef short
@@ -560,10 +603,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   27
+#define YYLAST   28
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  40
+#define YYNTOKENS  83
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
@@ -572,7 +615,7 @@ union yyalloc
 #define YYNSTATES  39
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   294
+#define YYMAXUTOK   337
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -613,15 +656,19 @@ static const yytype_int8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
+      75,    76,    77,    78,    79,    80,    81,    82
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   146,   146,   153,   155,   157,   159,   161,   163,   164,
-     165,   167,   169,   171,   173
+       0,   203,   203,   210,   212,   214,   216,   218,   220,   221,
+     222,   224,   226,   228,   230
 };
 #endif
 
@@ -630,15 +677,22 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "_ERROR_", "_LPAREN", "_RPAREN",
-  "_COMMA", "_SEMI", "_LT", "_LDARROW", "_LTGT", "_EQ", "_DEQ", "_GT",
-  "_GTEQ", "_KW_Output", "_KW_Procedure", "_LBRACK", "_RBRACK",
-  "_KW_assign", "_KW_begin", "_KW_digit", "_KW_do", "_KW_double",
-  "_KW_else", "_SYMB_1", "_KW_float", "_KW_for", "_KW_goto", "_KW_if",
-  "_KW_int", "_KW_letter", "_KW_number", "_KW_program", "_KW_then",
-  "_KW_while", "_LBRACE", "_RBRACE", "_SYMB_6", "_IDENT_", "$accept",
-  "Prog", "Dec", "Label", "Uses", "Variable", "Type", "Type_specifier",
-  "Constant", "Cmdlist", "Cmd", "Cmd_type", YY_NULLPTR
+  "$end", "error", "$undefined", "_ERROR_", "_BANGEQ", "_PERCENT",
+  "_PERCENTEQ", "_AMP", "_DAMP", "_AMPEQ", "_LPAREN", "_RPAREN", "_STAR",
+  "_STAREQ", "_PLUS", "_DPLUS", "_PLUSEQ", "_COMMA", "_MINUS", "_DMINUS",
+  "_MINUSEQ", "_RARROW", "_DOT", "_SLASH", "_SLASHEQ", "_COLON", "_SEMI",
+  "_LT", "_DLT", "_DLTEQ", "_LDARROW", "_EQ", "_DEQ", "_GT", "_GTEQ",
+  "_DGT", "_DGTEQ", "_QUESTION", "_KW_Procedure", "_KW_Write", "_LBRACK",
+  "_RBRACK", "_CARET", "_CARETEQ", "_KW_assign", "_KW_begin", "_KW_digit",
+  "_KW_do", "_KW_double", "_KW_else", "_SYMB_1", "_KW_float", "_KW_for",
+  "_KW_goto", "_KW_if", "_KW_int", "_KW_letter", "_KW_number",
+  "_KW_program", "_KW_then", "_KW_while", "_LBRACE", "_BAR", "_BAREQ",
+  "_DBAR", "_RBRACE", "_SYMB_6", "T_CDouble", "T_CFloat", "T_CLongDouble",
+  "T_HexLong", "T_HexUnsLong", "T_HexUnsigned", "T_Hexadecimal", "T_Long",
+  "T_Octal", "T_OctalLong", "T_OctalUnsLong", "T_OctalUnsigned",
+  "T_Unsigned", "T_UnsignedLong", "_STRING_", "_IDENT_", "$accept", "Prog",
+  "Dec", "Label", "Uses", "Variable", "Type", "Type_specifier", "Constant",
+  "Cmdlist", "Cmd", "Cmd_type", YY_NULLPTR
 };
 #endif
 
@@ -650,11 +704,16 @@ static const yytype_int16 yytoknum[] =
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,   292,   293,   294
+     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
+     295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
+     305,   306,   307,   308,   309,   310,   311,   312,   313,   314,
+     315,   316,   317,   318,   319,   320,   321,   322,   323,   324,
+     325,   326,   327,   328,   329,   330,   331,   332,   333,   334,
+     335,   336,   337
 };
 # endif
 
-#define YYPACT_NINF (-38)
+#define YYPACT_NINF (-81)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -668,10 +727,10 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -32,   -37,     4,    -2,   -38,   -33,   -38,   -38,   -31,   -27,
-     -29,     5,     1,   -23,   -26,   -23,   -38,   -38,   -38,   -18,
-     -38,   -22,     9,    10,    -1,    11,   -38,   -38,    -8,   -38,
-     -33,    -4,   -14,   -38,   -38,   -38,    -8,   -15,   -38
+     -57,   -80,     4,   -21,   -81,   -76,   -81,   -81,   -74,   -52,
+     -72,    -6,   -19,   -48,   -69,   -48,   -81,   -81,   -81,   -43,
+     -81,   -50,   -10,    -9,   -27,    -7,   -81,   -81,   -33,   -81,
+     -76,   -29,   -39,   -81,   -81,   -81,   -33,   -43,   -81
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -688,8 +747,8 @@ static const yytype_int8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -38,   -38,   -38,    -6,   -38,   -38,    12,   -38,   -38,   -38,
-     -11,   -38
+     -81,   -81,   -81,    -5,   -81,   -81,     9,   -81,   -81,   -81,
+      -8,   -81
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -705,32 +764,32 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yytable[] =
 {
       16,     1,     3,    17,     4,     5,     6,    18,     9,    11,
-      12,    14,    15,    21,    23,    25,    26,    27,    29,    28,
-      30,    35,    36,    38,    34,    37,     0,    22
+      12,    14,    15,    21,    23,    25,    26,    27,    28,    29,
+      30,    35,    36,    38,    22,    34,     0,     0,    37
 };
 
 static const yytype_int8 yycheck[] =
 {
-      23,    33,    39,    26,     0,     7,    39,    30,    39,    36,
-      39,     6,    11,    39,    32,    37,     7,     7,     7,    20,
-      28,    25,    36,    38,    30,    36,    -1,    15
+      48,    58,    82,    51,     0,    26,    82,    55,    82,    61,
+      82,    17,    31,    82,    57,    65,    26,    26,    45,    26,
+      53,    50,    61,    66,    15,    30,    -1,    -1,    36
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    33,    41,    39,     0,     7,    39,    42,    43,    39,
-      44,    36,    39,    45,     6,    11,    23,    26,    30,    46,
-      47,    39,    46,    32,    48,    37,     7,     7,    20,     7,
-      28,    49,    50,    51,    43,    25,    36,    50,    38
+       0,    58,    84,    82,     0,    26,    82,    85,    86,    82,
+      87,    61,    82,    88,    17,    31,    48,    51,    55,    89,
+      90,    82,    89,    57,    91,    65,    26,    26,    45,    26,
+      53,    92,    93,    94,    86,    50,    61,    93,    66
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    40,    41,    42,    43,    44,    45,    46,    47,    47,
-      47,    48,    49,    50,    51
+       0,    83,    84,    85,    86,    87,    88,    89,    90,    90,
+      90,    91,    92,    93,    94
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1538,85 +1597,85 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 146 "Jair.y"
+#line 203 "Jair.y"
                                      { (yyval.prog_) = make_Program((yyvsp[-2]._string), (yyvsp[0].dec_)); result->prog_ = (yyval.prog_); }
-#line 1544 "Jair.tab.c"
+#line 1603 "Jair.tab.c"
     break;
 
   case 3:
-#line 153 "Jair.y"
+#line 210 "Jair.y"
                                                                   { (yyval.dec_) = make_Block((yyvsp[-7].label_), (yyvsp[-6].uses_), (yyvsp[-5].variable_), (yyvsp[-4].type_), (yyvsp[-3].constant_), (yyvsp[-1].cmdlist_)); result->dec_ = (yyval.dec_); }
-#line 1550 "Jair.tab.c"
+#line 1609 "Jair.tab.c"
     break;
 
   case 4:
-#line 155 "Jair.y"
+#line 212 "Jair.y"
                 { (yyval.label_) = make_Label((yyvsp[0]._string)); result->label_ = (yyval.label_); }
-#line 1556 "Jair.tab.c"
+#line 1615 "Jair.tab.c"
     break;
 
   case 5:
-#line 157 "Jair.y"
+#line 214 "Jair.y"
                                                     { (yyval.uses_) = make_Uses((yyvsp[-5]._string), (yyvsp[-2]._string)); result->uses_ = (yyval.uses_); }
-#line 1562 "Jair.tab.c"
+#line 1621 "Jair.tab.c"
     break;
 
   case 6:
-#line 159 "Jair.y"
+#line 216 "Jair.y"
                                   { (yyval.variable_) = make_Variable((yyvsp[-3]._string), (yyvsp[-1].type_)); result->variable_ = (yyval.variable_); }
-#line 1568 "Jair.tab.c"
+#line 1627 "Jair.tab.c"
     break;
 
   case 7:
-#line 161 "Jair.y"
+#line 218 "Jair.y"
                       { (yyval.type_) = make_Type((yyvsp[0].type_specifier_)); result->type_ = (yyval.type_); }
-#line 1574 "Jair.tab.c"
+#line 1633 "Jair.tab.c"
     break;
 
   case 8:
-#line 163 "Jair.y"
+#line 220 "Jair.y"
                          { (yyval.type_specifier_) = make_Tint(); result->type_specifier_ = (yyval.type_specifier_); }
-#line 1580 "Jair.tab.c"
+#line 1639 "Jair.tab.c"
     break;
 
   case 9:
-#line 164 "Jair.y"
+#line 221 "Jair.y"
               { (yyval.type_specifier_) = make_Tfloat(); result->type_specifier_ = (yyval.type_specifier_); }
-#line 1586 "Jair.tab.c"
+#line 1645 "Jair.tab.c"
     break;
 
   case 10:
-#line 165 "Jair.y"
+#line 222 "Jair.y"
                { (yyval.type_specifier_) = make_Tdouble(); result->type_specifier_ = (yyval.type_specifier_); }
-#line 1592 "Jair.tab.c"
+#line 1651 "Jair.tab.c"
     break;
 
   case 11:
-#line 167 "Jair.y"
+#line 224 "Jair.y"
                             { (yyval.constant_) = make_Constant(); result->constant_ = (yyval.constant_); }
-#line 1598 "Jair.tab.c"
+#line 1657 "Jair.tab.c"
     break;
 
   case 12:
-#line 169 "Jair.y"
+#line 226 "Jair.y"
                                   { (yyval.cmdlist_) = make_Cmdlist((yyvsp[-3].cmd_), (yyvsp[-1].cmd_)); result->cmdlist_ = (yyval.cmdlist_); }
-#line 1604 "Jair.tab.c"
+#line 1663 "Jair.tab.c"
     break;
 
   case 13:
-#line 171 "Jair.y"
+#line 228 "Jair.y"
                { (yyval.cmd_) = make_Cmd((yyvsp[0].cmd_type_)); result->cmd_ = (yyval.cmd_); }
-#line 1610 "Jair.tab.c"
+#line 1669 "Jair.tab.c"
     break;
 
   case 14:
-#line 173 "Jair.y"
+#line 230 "Jair.y"
                           { (yyval.cmd_type_) = make_Cmd_goto((yyvsp[0].label_)); result->cmd_type_ = (yyval.cmd_type_); }
-#line 1616 "Jair.tab.c"
+#line 1675 "Jair.tab.c"
     break;
 
 
-#line 1620 "Jair.tab.c"
+#line 1679 "Jair.tab.c"
 
       default: break;
     }
@@ -1854,7 +1913,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 193 "Jair.y"
+#line 301 "Jair.y"
 
 
 
@@ -2430,50 +2489,6 @@ Cmd_type psCmd_type(const char *str)
   }
 }
 
-/* Entrypoint: parse Exprecion from file. */
-Exprecion pExprecion(FILE *inp)
-{
-  YYSTYPE result;
-  yyscan_t scanner = jair__initialize_lexer(inp);
-  if (!scanner) {
-    fprintf(stderr, "Failed to initialize lexer.\n");
-    return 0;
-  }
-  int error = yyparse(scanner, &result);
-  jair_lex_destroy(scanner);
-  if (error)
-  { /* Failure */
-    return 0;
-  }
-  else
-  { /* Success */
-    return result.exprecion_;
-  }
-}
-
-/* Entrypoint: parse Exprecion from string. */
-Exprecion psExprecion(const char *str)
-{
-  YYSTYPE result;
-  yyscan_t scanner = jair__initialize_lexer(0);
-  if (!scanner) {
-    fprintf(stderr, "Failed to initialize lexer.\n");
-    return 0;
-  }
-  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
-  int error = yyparse(scanner, &result);
-  jair__delete_buffer(buf, scanner);
-  jair_lex_destroy(scanner);
-  if (error)
-  { /* Failure */
-    return 0;
-  }
-  else
-  { /* Success */
-    return result.exprecion_;
-  }
-}
-
 /* Entrypoint: parse Exp from file. */
 Exp pExp(FILE *inp)
 {
@@ -2562,6 +2577,622 @@ Exp psExp2(const char *str)
   }
 }
 
+/* Entrypoint: parse Exp from file. */
+Exp pExp3(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp3(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp4(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp4(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp5(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp5(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp6(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp6(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp7(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp7(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp8(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp8(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp9(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp9(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp10(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp10(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp11(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp11(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp12(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp12(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp13(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp13(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp14(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp14(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp15(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp15(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from file. */
+Exp pExp16(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
+/* Entrypoint: parse Exp from string. */
+Exp psExp16(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.exp_;
+  }
+}
+
 /* Entrypoint: parse Procedure from file. */
 Procedure pProcedure(FILE *inp)
 {
@@ -2603,6 +3234,50 @@ Procedure psProcedure(const char *str)
   else
   { /* Success */
     return result.procedure_;
+  }
+}
+
+/* Entrypoint: parse Assignment_op from file. */
+Assignment_op pAssignment_op(FILE *inp)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(inp);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  int error = yyparse(scanner, &result);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.assignment_op_;
+  }
+}
+
+/* Entrypoint: parse Assignment_op from string. */
+Assignment_op psAssignment_op(const char *str)
+{
+  YYSTYPE result;
+  yyscan_t scanner = jair__initialize_lexer(0);
+  if (!scanner) {
+    fprintf(stderr, "Failed to initialize lexer.\n");
+    return 0;
+  }
+  YY_BUFFER_STATE buf = jair__scan_string(str, scanner);
+  int error = yyparse(scanner, &result);
+  jair__delete_buffer(buf, scanner);
+  jair_lex_destroy(scanner);
+  if (error)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return result.assignment_op_;
   }
 }
 

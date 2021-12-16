@@ -216,27 +216,27 @@ void visitCmd_type(Cmd_type p)
   case is_Cmd_assign:
     /* Code for Cmd_assign Goes Here */
     visitVariable(p->u.cmd_assign_.variable_);
-    visitExp(p->u.cmd_assign_.exp_);
+    visitExprecion(p->u.cmd_assign_.exprecion_);
     break;
   case is_Cmd_while:
     /* Code for Cmd_while Goes Here */
-    visitExp(p->u.cmd_while_.exp_);
+    visitExprecion(p->u.cmd_while_.exprecion_);
     visitCmdlist(p->u.cmd_while_.cmdlist_);
     break;
   case is_Cmd_for:
     /* Code for Cmd_for Goes Here */
-    visitExp(p->u.cmd_for_.exp_);
+    visitExprecion(p->u.cmd_for_.exprecion_);
     visitCmdlist(p->u.cmd_for_.cmdlist_);
     break;
   case is_Cmd_if:
     /* Code for Cmd_if Goes Here */
-    visitExp(p->u.cmd_if_.exp_);
+    visitExprecion(p->u.cmd_if_.exprecion_);
     visitCmdlist(p->u.cmd_if_.cmdlist_1);
     visitCmdlist(p->u.cmd_if_.cmdlist_2);
     break;
   case is_Cmd_output:
     /* Code for Cmd_output Goes Here */
-    visitExp(p->u.cmd_output_.exp_);
+    visitExprecion(p->u.cmd_output_.exprecion_);
     break;
 
   default:
@@ -245,168 +245,74 @@ void visitCmd_type(Cmd_type p)
   }
 }
 
+void visitExprecion(Exprecion p)
+{
+  switch(p->kind)
+  {
+  case is_Exprecion:
+    /* Code for Exprecion Goes Here */
+    visitExp(p->u.exprecion_.exp_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Exprecion!\n");
+    exit(1);
+  }
+}
+
 void visitExp(Exp p)
 {
   switch(p->kind)
   {
-  case is_Ecomma:
-    /* Code for Ecomma Goes Here */
-    visitExp(p->u.ecomma_.exp_1);
-    visitExp(p->u.ecomma_.exp_2);
+  case is_Expeq:
+    /* Code for Expeq Goes Here */
+    visitExp(p->u.expeq_.exp_1);
+    visitExp(p->u.expeq_.exp_2);
     break;
-  case is_Eassign:
-    /* Code for Eassign Goes Here */
-    visitExp(p->u.eassign_.exp_1);
-    visitAssignment_op(p->u.eassign_.assignment_op_);
-    visitExp(p->u.eassign_.exp_2);
+  case is_Expenq:
+    /* Code for Expenq Goes Here */
+    visitExp(p->u.expenq_.exp_1);
+    visitExp(p->u.expenq_.exp_2);
     break;
-  case is_Econdition:
-    /* Code for Econdition Goes Here */
-    visitExp(p->u.econdition_.exp_1);
-    visitExp(p->u.econdition_.exp_2);
-    visitExp(p->u.econdition_.exp_3);
+  case is_Expmaior:
+    /* Code for Expmaior Goes Here */
+    visitExp(p->u.expmaior_.exp_1);
+    visitExp(p->u.expmaior_.exp_2);
     break;
-  case is_Elor:
-    /* Code for Elor Goes Here */
-    visitExp(p->u.elor_.exp_1);
-    visitExp(p->u.elor_.exp_2);
+  case is_Expmenor:
+    /* Code for Expmenor Goes Here */
+    visitExp(p->u.expmenor_.exp_1);
+    visitExp(p->u.expmenor_.exp_2);
     break;
-  case is_Eland:
-    /* Code for Eland Goes Here */
-    visitExp(p->u.eland_.exp_1);
-    visitExp(p->u.eland_.exp_2);
+  case is_Expmaioreq:
+    /* Code for Expmaioreq Goes Here */
+    visitExp(p->u.expmaioreq_.exp_1);
+    visitExp(p->u.expmaioreq_.exp_2);
     break;
-  case is_Ebitor:
-    /* Code for Ebitor Goes Here */
-    visitExp(p->u.ebitor_.exp_1);
-    visitExp(p->u.ebitor_.exp_2);
+  case is_Expmenoreq:
+    /* Code for Expmenoreq Goes Here */
+    visitExp(p->u.expmenoreq_.exp_1);
+    visitExp(p->u.expmenoreq_.exp_2);
     break;
-  case is_Ebitexor:
-    /* Code for Ebitexor Goes Here */
-    visitExp(p->u.ebitexor_.exp_1);
-    visitExp(p->u.ebitexor_.exp_2);
+  case is_Expadd:
+    /* Code for Expadd Goes Here */
+    visitExp(p->u.expadd_.exp_1);
+    visitExp(p->u.expadd_.exp_2);
     break;
-  case is_Ebitand:
-    /* Code for Ebitand Goes Here */
-    visitExp(p->u.ebitand_.exp_1);
-    visitExp(p->u.ebitand_.exp_2);
+  case is_Expsub:
+    /* Code for Expsub Goes Here */
+    visitExp(p->u.expsub_.exp_1);
+    visitExp(p->u.expsub_.exp_2);
     break;
-  case is_Eeq:
-    /* Code for Eeq Goes Here */
-    visitExp(p->u.eeq_.exp_1);
-    visitExp(p->u.eeq_.exp_2);
+  case is_Expmult:
+    /* Code for Expmult Goes Here */
+    visitExp(p->u.expmult_.exp_1);
+    visitExp(p->u.expmult_.exp_2);
     break;
-  case is_Eneq:
-    /* Code for Eneq Goes Here */
-    visitExp(p->u.eneq_.exp_1);
-    visitExp(p->u.eneq_.exp_2);
-    break;
-  case is_Elthen:
-    /* Code for Elthen Goes Here */
-    visitExp(p->u.elthen_.exp_1);
-    visitExp(p->u.elthen_.exp_2);
-    break;
-  case is_Egrthen:
-    /* Code for Egrthen Goes Here */
-    visitExp(p->u.egrthen_.exp_1);
-    visitExp(p->u.egrthen_.exp_2);
-    break;
-  case is_Ele:
-    /* Code for Ele Goes Here */
-    visitExp(p->u.ele_.exp_1);
-    visitExp(p->u.ele_.exp_2);
-    break;
-  case is_Ege:
-    /* Code for Ege Goes Here */
-    visitExp(p->u.ege_.exp_1);
-    visitExp(p->u.ege_.exp_2);
-    break;
-  case is_Eleft:
-    /* Code for Eleft Goes Here */
-    visitExp(p->u.eleft_.exp_1);
-    visitExp(p->u.eleft_.exp_2);
-    break;
-  case is_Eright:
-    /* Code for Eright Goes Here */
-    visitExp(p->u.eright_.exp_1);
-    visitExp(p->u.eright_.exp_2);
-    break;
-  case is_Eplus:
-    /* Code for Eplus Goes Here */
-    visitExp(p->u.eplus_.exp_1);
-    visitExp(p->u.eplus_.exp_2);
-    break;
-  case is_Eminus:
-    /* Code for Eminus Goes Here */
-    visitExp(p->u.eminus_.exp_1);
-    visitExp(p->u.eminus_.exp_2);
-    break;
-  case is_Etimes:
-    /* Code for Etimes Goes Here */
-    visitExp(p->u.etimes_.exp_1);
-    visitExp(p->u.etimes_.exp_2);
-    break;
-  case is_Ediv:
-    /* Code for Ediv Goes Here */
-    visitExp(p->u.ediv_.exp_1);
-    visitExp(p->u.ediv_.exp_2);
-    break;
-  case is_Emod:
-    /* Code for Emod Goes Here */
-    visitExp(p->u.emod_.exp_1);
-    visitExp(p->u.emod_.exp_2);
-    break;
-  case is_Epreinc:
-    /* Code for Epreinc Goes Here */
-    visitExp(p->u.epreinc_.exp_);
-    break;
-  case is_Epredec:
-    /* Code for Epredec Goes Here */
-    visitExp(p->u.epredec_.exp_);
-    break;
-  case is_Earray:
-    /* Code for Earray Goes Here */
-    visitExp(p->u.earray_.exp_1);
-    visitExp(p->u.earray_.exp_2);
-    break;
-  case is_Efunk:
-    /* Code for Efunk Goes Here */
-    visitExp(p->u.efunk_.exp_);
-    break;
-  case is_Efunkpar:
-    /* Code for Efunkpar Goes Here */
-    visitExp(p->u.efunkpar_.exp_1);
-    visitExp(p->u.efunkpar_.exp_2);
-    break;
-  case is_Eselect:
-    /* Code for Eselect Goes Here */
-    visitExp(p->u.eselect_.exp_);
-    visitIdent(p->u.eselect_.ident_);
-    break;
-  case is_Epoint:
-    /* Code for Epoint Goes Here */
-    visitExp(p->u.epoint_.exp_);
-    visitIdent(p->u.epoint_.ident_);
-    break;
-  case is_Epostinc:
-    /* Code for Epostinc Goes Here */
-    visitExp(p->u.epostinc_.exp_);
-    break;
-  case is_Epostdec:
-    /* Code for Epostdec Goes Here */
-    visitExp(p->u.epostdec_.exp_);
-    break;
-  case is_Evar:
-    /* Code for Evar Goes Here */
-    visitIdent(p->u.evar_.ident_);
-    break;
-  case is_Econst:
-    /* Code for Econst Goes Here */
-    visitConstant(p->u.econst_.constant_);
-    break;
-  case is_Estring:
-    /* Code for Estring Goes Here */
-    visitString(p->u.estring_.string_);
+  case is_Expdiv:
+    /* Code for Expdiv Goes Here */
+    visitExp(p->u.expdiv_.exp_1);
+    visitExp(p->u.expdiv_.exp_2);
     break;
 
   default:
@@ -428,50 +334,6 @@ void visitProcedure(Procedure p)
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Procedure!\n");
-    exit(1);
-  }
-}
-
-void visitAssignment_op(Assignment_op p)
-{
-  switch(p->kind)
-  {
-  case is_Assign:
-    /* Code for Assign Goes Here */
-    break;
-  case is_AssignMul:
-    /* Code for AssignMul Goes Here */
-    break;
-  case is_AssignDiv:
-    /* Code for AssignDiv Goes Here */
-    break;
-  case is_AssignMod:
-    /* Code for AssignMod Goes Here */
-    break;
-  case is_AssignAdd:
-    /* Code for AssignAdd Goes Here */
-    break;
-  case is_AssignSub:
-    /* Code for AssignSub Goes Here */
-    break;
-  case is_AssignLeft:
-    /* Code for AssignLeft Goes Here */
-    break;
-  case is_AssignRight:
-    /* Code for AssignRight Goes Here */
-    break;
-  case is_AssignAnd:
-    /* Code for AssignAnd Goes Here */
-    break;
-  case is_AssignXor:
-    /* Code for AssignXor Goes Here */
-    break;
-  case is_AssignOr:
-    /* Code for AssignOr Goes Here */
-    break;
-
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Assignment_op!\n");
     exit(1);
   }
 }

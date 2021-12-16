@@ -213,7 +213,7 @@ Label : _IDENT_ { $$ = make_Label($1); result->label_ = $$; }
 ;
 Uses : _IDENT_ _LBRACE _COMMA _IDENT_ _RBRACE _SEMI { $$ = make_Uses($1, $4); result->uses_ = $$; }
 ;
-Variable : _IDENT_ _EQ Type _SEMI { $$ = make_Variable($1, $3); result->variable_ = $$; }
+Variable : _IDENT_ _COLON Type _SEMI { $$ = make_Variable($1, $3); result->variable_ = $$; }
 ;
 Type : Type_specifier { $$ = make_Type($1); result->type_ = $$; }
 ;

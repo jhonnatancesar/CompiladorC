@@ -251,7 +251,7 @@ Cmd_type make_Cmd_goto(Label p1)
 
 /********************   Cmd_assign    ********************/
 
-Cmd_type make_Cmd_assign(Variable p1, Exprecion p2)
+Cmd_type make_Cmd_assign(Variable p1, Exp p2)
 {
     Cmd_type tmp = (Cmd_type) malloc(sizeof(*tmp));
     if (!tmp)
@@ -261,13 +261,13 @@ Cmd_type make_Cmd_assign(Variable p1, Exprecion p2)
     }
     tmp->kind = is_Cmd_assign;
     tmp->u.cmd_assign_.variable_ = p1;
-    tmp->u.cmd_assign_.exprecion_ = p2;
+    tmp->u.cmd_assign_.exp_ = p2;
     return tmp;
 }
 
 /********************   Cmd_while    ********************/
 
-Cmd_type make_Cmd_while(Exprecion p1, Cmdlist p2)
+Cmd_type make_Cmd_while(Exp p1, Cmdlist p2)
 {
     Cmd_type tmp = (Cmd_type) malloc(sizeof(*tmp));
     if (!tmp)
@@ -276,14 +276,14 @@ Cmd_type make_Cmd_while(Exprecion p1, Cmdlist p2)
         exit(1);
     }
     tmp->kind = is_Cmd_while;
-    tmp->u.cmd_while_.exprecion_ = p1;
+    tmp->u.cmd_while_.exp_ = p1;
     tmp->u.cmd_while_.cmdlist_ = p2;
     return tmp;
 }
 
 /********************   Cmd_for    ********************/
 
-Cmd_type make_Cmd_for(Exprecion p1, Cmdlist p2)
+Cmd_type make_Cmd_for(Exp p1, Cmdlist p2)
 {
     Cmd_type tmp = (Cmd_type) malloc(sizeof(*tmp));
     if (!tmp)
@@ -292,14 +292,14 @@ Cmd_type make_Cmd_for(Exprecion p1, Cmdlist p2)
         exit(1);
     }
     tmp->kind = is_Cmd_for;
-    tmp->u.cmd_for_.exprecion_ = p1;
+    tmp->u.cmd_for_.exp_ = p1;
     tmp->u.cmd_for_.cmdlist_ = p2;
     return tmp;
 }
 
 /********************   Cmd_if    ********************/
 
-Cmd_type make_Cmd_if(Exprecion p1, Cmdlist p2, Cmdlist p3)
+Cmd_type make_Cmd_if(Exp p1, Cmdlist p2, Cmdlist p3)
 {
     Cmd_type tmp = (Cmd_type) malloc(sizeof(*tmp));
     if (!tmp)
@@ -308,7 +308,7 @@ Cmd_type make_Cmd_if(Exprecion p1, Cmdlist p2, Cmdlist p3)
         exit(1);
     }
     tmp->kind = is_Cmd_if;
-    tmp->u.cmd_if_.exprecion_ = p1;
+    tmp->u.cmd_if_.exp_ = p1;
     tmp->u.cmd_if_.cmdlist_1 = p2;
     tmp->u.cmd_if_.cmdlist_2 = p3;
     return tmp;
@@ -316,7 +316,7 @@ Cmd_type make_Cmd_if(Exprecion p1, Cmdlist p2, Cmdlist p3)
 
 /********************   Cmd_output    ********************/
 
-Cmd_type make_Cmd_output(Exprecion p1)
+Cmd_type make_Cmd_output(Exp p1)
 {
     Cmd_type tmp = (Cmd_type) malloc(sizeof(*tmp));
     if (!tmp)
@@ -325,118 +325,529 @@ Cmd_type make_Cmd_output(Exprecion p1)
         exit(1);
     }
     tmp->kind = is_Cmd_output;
-    tmp->u.cmd_output_.exprecion_ = p1;
+    tmp->u.cmd_output_.exp_ = p1;
     return tmp;
 }
 
-/********************   Exprecion    ********************/
+/********************   Ecomma    ********************/
 
-Exprecion make_Exprecion(Exp p1)
-{
-    Exprecion tmp = (Exprecion) malloc(sizeof(*tmp));
-    if (!tmp)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Exprecion!\n");
-        exit(1);
-    }
-    tmp->kind = is_Exprecion;
-    tmp->u.exprecion_.exp_ = p1;
-    return tmp;
-}
-
-/********************   Expeq    ********************/
-
-Exp make_Expeq(Exp p1, Exp p2)
+Exp make_Ecomma(Exp p1, Exp p2)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expeq!\n");
+        fprintf(stderr, "Error: out of memory when allocating Ecomma!\n");
         exit(1);
     }
-    tmp->kind = is_Expeq;
-    tmp->u.expeq_.exp_1 = p1;
-    tmp->u.expeq_.exp_2 = p2;
+    tmp->kind = is_Ecomma;
+    tmp->u.ecomma_.exp_1 = p1;
+    tmp->u.ecomma_.exp_2 = p2;
     return tmp;
 }
 
-/********************   Expenq    ********************/
+/********************   Eassign    ********************/
 
-Exp make_Expenq(Exp p1, Exp p2)
+Exp make_Eassign(Exp p1, Assignment_op p2, Exp p3)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expenq!\n");
+        fprintf(stderr, "Error: out of memory when allocating Eassign!\n");
         exit(1);
     }
-    tmp->kind = is_Expenq;
-    tmp->u.expenq_.exp_1 = p1;
-    tmp->u.expenq_.exp_2 = p2;
+    tmp->kind = is_Eassign;
+    tmp->u.eassign_.exp_1 = p1;
+    tmp->u.eassign_.assignment_op_ = p2;
+    tmp->u.eassign_.exp_2 = p3;
     return tmp;
 }
 
-/********************   Expmaior    ********************/
+/********************   Econdition    ********************/
 
-Exp make_Expmaior(Exp p1, Exp p2)
+Exp make_Econdition(Exp p1, Exp p2, Exp p3)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expmaior!\n");
+        fprintf(stderr, "Error: out of memory when allocating Econdition!\n");
         exit(1);
     }
-    tmp->kind = is_Expmaior;
-    tmp->u.expmaior_.exp_1 = p1;
-    tmp->u.expmaior_.exp_2 = p2;
+    tmp->kind = is_Econdition;
+    tmp->u.econdition_.exp_1 = p1;
+    tmp->u.econdition_.exp_2 = p2;
+    tmp->u.econdition_.exp_3 = p3;
     return tmp;
 }
 
-/********************   Expmenor    ********************/
+/********************   Elor    ********************/
 
-Exp make_Expmenor(Exp p1, Exp p2)
+Exp make_Elor(Exp p1, Exp p2)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expmenor!\n");
+        fprintf(stderr, "Error: out of memory when allocating Elor!\n");
         exit(1);
     }
-    tmp->kind = is_Expmenor;
-    tmp->u.expmenor_.exp_1 = p1;
-    tmp->u.expmenor_.exp_2 = p2;
+    tmp->kind = is_Elor;
+    tmp->u.elor_.exp_1 = p1;
+    tmp->u.elor_.exp_2 = p2;
     return tmp;
 }
 
-/********************   Expmaioreq    ********************/
+/********************   Eland    ********************/
 
-Exp make_Expmaioreq(Exp p1, Exp p2)
+Exp make_Eland(Exp p1, Exp p2)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expmaioreq!\n");
+        fprintf(stderr, "Error: out of memory when allocating Eland!\n");
         exit(1);
     }
-    tmp->kind = is_Expmaioreq;
-    tmp->u.expmaioreq_.exp_1 = p1;
-    tmp->u.expmaioreq_.exp_2 = p2;
+    tmp->kind = is_Eland;
+    tmp->u.eland_.exp_1 = p1;
+    tmp->u.eland_.exp_2 = p2;
     return tmp;
 }
 
-/********************   Expmenoreq    ********************/
+/********************   Ebitor    ********************/
 
-Exp make_Expmenoreq(Exp p1, Exp p2)
+Exp make_Ebitor(Exp p1, Exp p2)
 {
     Exp tmp = (Exp) malloc(sizeof(*tmp));
     if (!tmp)
     {
-        fprintf(stderr, "Error: out of memory when allocating Expmenoreq!\n");
+        fprintf(stderr, "Error: out of memory when allocating Ebitor!\n");
         exit(1);
     }
-    tmp->kind = is_Expmenoreq;
-    tmp->u.expmenoreq_.exp_1 = p1;
-    tmp->u.expmenoreq_.exp_2 = p2;
+    tmp->kind = is_Ebitor;
+    tmp->u.ebitor_.exp_1 = p1;
+    tmp->u.ebitor_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Ebitexor    ********************/
+
+Exp make_Ebitexor(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Ebitexor!\n");
+        exit(1);
+    }
+    tmp->kind = is_Ebitexor;
+    tmp->u.ebitexor_.exp_1 = p1;
+    tmp->u.ebitexor_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Ebitand    ********************/
+
+Exp make_Ebitand(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Ebitand!\n");
+        exit(1);
+    }
+    tmp->kind = is_Ebitand;
+    tmp->u.ebitand_.exp_1 = p1;
+    tmp->u.ebitand_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eeq    ********************/
+
+Exp make_Eeq(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eeq!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eeq;
+    tmp->u.eeq_.exp_1 = p1;
+    tmp->u.eeq_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eneq    ********************/
+
+Exp make_Eneq(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eneq!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eneq;
+    tmp->u.eneq_.exp_1 = p1;
+    tmp->u.eneq_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Elthen    ********************/
+
+Exp make_Elthen(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Elthen!\n");
+        exit(1);
+    }
+    tmp->kind = is_Elthen;
+    tmp->u.elthen_.exp_1 = p1;
+    tmp->u.elthen_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Egrthen    ********************/
+
+Exp make_Egrthen(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Egrthen!\n");
+        exit(1);
+    }
+    tmp->kind = is_Egrthen;
+    tmp->u.egrthen_.exp_1 = p1;
+    tmp->u.egrthen_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Ele    ********************/
+
+Exp make_Ele(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Ele!\n");
+        exit(1);
+    }
+    tmp->kind = is_Ele;
+    tmp->u.ele_.exp_1 = p1;
+    tmp->u.ele_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Ege    ********************/
+
+Exp make_Ege(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Ege!\n");
+        exit(1);
+    }
+    tmp->kind = is_Ege;
+    tmp->u.ege_.exp_1 = p1;
+    tmp->u.ege_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eleft    ********************/
+
+Exp make_Eleft(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eleft!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eleft;
+    tmp->u.eleft_.exp_1 = p1;
+    tmp->u.eleft_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eright    ********************/
+
+Exp make_Eright(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eright!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eright;
+    tmp->u.eright_.exp_1 = p1;
+    tmp->u.eright_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eplus    ********************/
+
+Exp make_Eplus(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eplus!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eplus;
+    tmp->u.eplus_.exp_1 = p1;
+    tmp->u.eplus_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eminus    ********************/
+
+Exp make_Eminus(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eminus!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eminus;
+    tmp->u.eminus_.exp_1 = p1;
+    tmp->u.eminus_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Etimes    ********************/
+
+Exp make_Etimes(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Etimes!\n");
+        exit(1);
+    }
+    tmp->kind = is_Etimes;
+    tmp->u.etimes_.exp_1 = p1;
+    tmp->u.etimes_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Ediv    ********************/
+
+Exp make_Ediv(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Ediv!\n");
+        exit(1);
+    }
+    tmp->kind = is_Ediv;
+    tmp->u.ediv_.exp_1 = p1;
+    tmp->u.ediv_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Emod    ********************/
+
+Exp make_Emod(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Emod!\n");
+        exit(1);
+    }
+    tmp->kind = is_Emod;
+    tmp->u.emod_.exp_1 = p1;
+    tmp->u.emod_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Epreinc    ********************/
+
+Exp make_Epreinc(Exp p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Epreinc!\n");
+        exit(1);
+    }
+    tmp->kind = is_Epreinc;
+    tmp->u.epreinc_.exp_ = p1;
+    return tmp;
+}
+
+/********************   Epredec    ********************/
+
+Exp make_Epredec(Exp p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Epredec!\n");
+        exit(1);
+    }
+    tmp->kind = is_Epredec;
+    tmp->u.epredec_.exp_ = p1;
+    return tmp;
+}
+
+/********************   Earray    ********************/
+
+Exp make_Earray(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Earray!\n");
+        exit(1);
+    }
+    tmp->kind = is_Earray;
+    tmp->u.earray_.exp_1 = p1;
+    tmp->u.earray_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Efunk    ********************/
+
+Exp make_Efunk(Exp p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Efunk!\n");
+        exit(1);
+    }
+    tmp->kind = is_Efunk;
+    tmp->u.efunk_.exp_ = p1;
+    return tmp;
+}
+
+/********************   Efunkpar    ********************/
+
+Exp make_Efunkpar(Exp p1, Exp p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Efunkpar!\n");
+        exit(1);
+    }
+    tmp->kind = is_Efunkpar;
+    tmp->u.efunkpar_.exp_1 = p1;
+    tmp->u.efunkpar_.exp_2 = p2;
+    return tmp;
+}
+
+/********************   Eselect    ********************/
+
+Exp make_Eselect(Exp p1, Ident p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Eselect!\n");
+        exit(1);
+    }
+    tmp->kind = is_Eselect;
+    tmp->u.eselect_.exp_ = p1;
+    tmp->u.eselect_.ident_ = p2;
+    return tmp;
+}
+
+/********************   Epoint    ********************/
+
+Exp make_Epoint(Exp p1, Ident p2)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Epoint!\n");
+        exit(1);
+    }
+    tmp->kind = is_Epoint;
+    tmp->u.epoint_.exp_ = p1;
+    tmp->u.epoint_.ident_ = p2;
+    return tmp;
+}
+
+/********************   Epostinc    ********************/
+
+Exp make_Epostinc(Exp p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Epostinc!\n");
+        exit(1);
+    }
+    tmp->kind = is_Epostinc;
+    tmp->u.epostinc_.exp_ = p1;
+    return tmp;
+}
+
+/********************   Epostdec    ********************/
+
+Exp make_Epostdec(Exp p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Epostdec!\n");
+        exit(1);
+    }
+    tmp->kind = is_Epostdec;
+    tmp->u.epostdec_.exp_ = p1;
+    return tmp;
+}
+
+/********************   Evar    ********************/
+
+Exp make_Evar(Ident p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Evar!\n");
+        exit(1);
+    }
+    tmp->kind = is_Evar;
+    tmp->u.evar_.ident_ = p1;
+    return tmp;
+}
+
+/********************   Econst    ********************/
+
+Exp make_Econst(Constant p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Econst!\n");
+        exit(1);
+    }
+    tmp->kind = is_Econst;
+    tmp->u.econst_.constant_ = p1;
+    return tmp;
+}
+
+/********************   Estring    ********************/
+
+Exp make_Estring(String p1)
+{
+    Exp tmp = (Exp) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Estring!\n");
+        exit(1);
+    }
+    tmp->kind = is_Estring;
+    tmp->u.estring_.string_ = p1;
     return tmp;
 }
 
@@ -454,6 +865,160 @@ Procedure make_Funtion(Ident p1, Variable p2, Cmdlist p3)
     tmp->u.funtion_.ident_ = p1;
     tmp->u.funtion_.variable_ = p2;
     tmp->u.funtion_.cmdlist_ = p3;
+    return tmp;
+}
+
+/********************   Assign    ********************/
+
+Assignment_op make_Assign()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Assign!\n");
+        exit(1);
+    }
+    tmp->kind = is_Assign;
+    return tmp;
+}
+
+/********************   AssignMul    ********************/
+
+Assignment_op make_AssignMul()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignMul!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignMul;
+    return tmp;
+}
+
+/********************   AssignDiv    ********************/
+
+Assignment_op make_AssignDiv()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignDiv!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignDiv;
+    return tmp;
+}
+
+/********************   AssignMod    ********************/
+
+Assignment_op make_AssignMod()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignMod!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignMod;
+    return tmp;
+}
+
+/********************   AssignAdd    ********************/
+
+Assignment_op make_AssignAdd()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignAdd!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignAdd;
+    return tmp;
+}
+
+/********************   AssignSub    ********************/
+
+Assignment_op make_AssignSub()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignSub!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignSub;
+    return tmp;
+}
+
+/********************   AssignLeft    ********************/
+
+Assignment_op make_AssignLeft()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignLeft!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignLeft;
+    return tmp;
+}
+
+/********************   AssignRight    ********************/
+
+Assignment_op make_AssignRight()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignRight!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignRight;
+    return tmp;
+}
+
+/********************   AssignAnd    ********************/
+
+Assignment_op make_AssignAnd()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignAnd!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignAnd;
+    return tmp;
+}
+
+/********************   AssignXor    ********************/
+
+Assignment_op make_AssignXor()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignXor!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignXor;
+    return tmp;
+}
+
+/********************   AssignOr    ********************/
+
+Assignment_op make_AssignOr()
+{
+    Assignment_op tmp = (Assignment_op) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating AssignOr!\n");
+        exit(1);
+    }
+    tmp->kind = is_AssignOr;
     return tmp;
 }
 
@@ -653,46 +1218,33 @@ Cmd_type clone_Cmd_type(Cmd_type p)
   case is_Cmd_assign:
     return make_Cmd_assign
       ( clone_Variable(p->u.cmd_assign_.variable_)
-      , clone_Exprecion(p->u.cmd_assign_.exprecion_)
+      , clone_Exp(p->u.cmd_assign_.exp_)
       );
 
   case is_Cmd_while:
     return make_Cmd_while
-      ( clone_Exprecion(p->u.cmd_while_.exprecion_)
+      ( clone_Exp(p->u.cmd_while_.exp_)
       , clone_Cmdlist(p->u.cmd_while_.cmdlist_)
       );
 
   case is_Cmd_for:
     return make_Cmd_for
-      ( clone_Exprecion(p->u.cmd_for_.exprecion_)
+      ( clone_Exp(p->u.cmd_for_.exp_)
       , clone_Cmdlist(p->u.cmd_for_.cmdlist_)
       );
 
   case is_Cmd_if:
     return make_Cmd_if
-      ( clone_Exprecion(p->u.cmd_if_.exprecion_)
+      ( clone_Exp(p->u.cmd_if_.exp_)
       , clone_Cmdlist(p->u.cmd_if_.cmdlist_1)
       , clone_Cmdlist(p->u.cmd_if_.cmdlist_2)
       );
 
   case is_Cmd_output:
-    return make_Cmd_output (clone_Exprecion(p->u.cmd_output_.exprecion_));
+    return make_Cmd_output (clone_Exp(p->u.cmd_output_.exp_));
 
   default:
     fprintf(stderr, "Error: bad kind field when cloning Cmd_type!\n");
-    exit(1);
-  }
-}
-
-Exprecion clone_Exprecion(Exprecion p)
-{
-  switch(p->kind)
-  {
-  case is_Exprecion:
-    return make_Exprecion (clone_Exp(p->u.exprecion_.exp_));
-
-  default:
-    fprintf(stderr, "Error: bad kind field when cloning Exprecion!\n");
     exit(1);
   }
 }
@@ -701,41 +1253,181 @@ Exp clone_Exp(Exp p)
 {
   switch(p->kind)
   {
-  case is_Expeq:
-    return make_Expeq
-      ( clone_Exp(p->u.expeq_.exp_1)
-      , clone_Exp(p->u.expeq_.exp_2)
+  case is_Ecomma:
+    return make_Ecomma
+      ( clone_Exp(p->u.ecomma_.exp_1)
+      , clone_Exp(p->u.ecomma_.exp_2)
       );
 
-  case is_Expenq:
-    return make_Expenq
-      ( clone_Exp(p->u.expenq_.exp_1)
-      , clone_Exp(p->u.expenq_.exp_2)
+  case is_Eassign:
+    return make_Eassign
+      ( clone_Exp(p->u.eassign_.exp_1)
+      , clone_Assignment_op(p->u.eassign_.assignment_op_)
+      , clone_Exp(p->u.eassign_.exp_2)
       );
 
-  case is_Expmaior:
-    return make_Expmaior
-      ( clone_Exp(p->u.expmaior_.exp_1)
-      , clone_Exp(p->u.expmaior_.exp_2)
+  case is_Econdition:
+    return make_Econdition
+      ( clone_Exp(p->u.econdition_.exp_1)
+      , clone_Exp(p->u.econdition_.exp_2)
+      , clone_Exp(p->u.econdition_.exp_3)
       );
 
-  case is_Expmenor:
-    return make_Expmenor
-      ( clone_Exp(p->u.expmenor_.exp_1)
-      , clone_Exp(p->u.expmenor_.exp_2)
+  case is_Elor:
+    return make_Elor
+      ( clone_Exp(p->u.elor_.exp_1)
+      , clone_Exp(p->u.elor_.exp_2)
       );
 
-  case is_Expmaioreq:
-    return make_Expmaioreq
-      ( clone_Exp(p->u.expmaioreq_.exp_1)
-      , clone_Exp(p->u.expmaioreq_.exp_2)
+  case is_Eland:
+    return make_Eland
+      ( clone_Exp(p->u.eland_.exp_1)
+      , clone_Exp(p->u.eland_.exp_2)
       );
 
-  case is_Expmenoreq:
-    return make_Expmenoreq
-      ( clone_Exp(p->u.expmenoreq_.exp_1)
-      , clone_Exp(p->u.expmenoreq_.exp_2)
+  case is_Ebitor:
+    return make_Ebitor
+      ( clone_Exp(p->u.ebitor_.exp_1)
+      , clone_Exp(p->u.ebitor_.exp_2)
       );
+
+  case is_Ebitexor:
+    return make_Ebitexor
+      ( clone_Exp(p->u.ebitexor_.exp_1)
+      , clone_Exp(p->u.ebitexor_.exp_2)
+      );
+
+  case is_Ebitand:
+    return make_Ebitand
+      ( clone_Exp(p->u.ebitand_.exp_1)
+      , clone_Exp(p->u.ebitand_.exp_2)
+      );
+
+  case is_Eeq:
+    return make_Eeq
+      ( clone_Exp(p->u.eeq_.exp_1)
+      , clone_Exp(p->u.eeq_.exp_2)
+      );
+
+  case is_Eneq:
+    return make_Eneq
+      ( clone_Exp(p->u.eneq_.exp_1)
+      , clone_Exp(p->u.eneq_.exp_2)
+      );
+
+  case is_Elthen:
+    return make_Elthen
+      ( clone_Exp(p->u.elthen_.exp_1)
+      , clone_Exp(p->u.elthen_.exp_2)
+      );
+
+  case is_Egrthen:
+    return make_Egrthen
+      ( clone_Exp(p->u.egrthen_.exp_1)
+      , clone_Exp(p->u.egrthen_.exp_2)
+      );
+
+  case is_Ele:
+    return make_Ele
+      ( clone_Exp(p->u.ele_.exp_1)
+      , clone_Exp(p->u.ele_.exp_2)
+      );
+
+  case is_Ege:
+    return make_Ege
+      ( clone_Exp(p->u.ege_.exp_1)
+      , clone_Exp(p->u.ege_.exp_2)
+      );
+
+  case is_Eleft:
+    return make_Eleft
+      ( clone_Exp(p->u.eleft_.exp_1)
+      , clone_Exp(p->u.eleft_.exp_2)
+      );
+
+  case is_Eright:
+    return make_Eright
+      ( clone_Exp(p->u.eright_.exp_1)
+      , clone_Exp(p->u.eright_.exp_2)
+      );
+
+  case is_Eplus:
+    return make_Eplus
+      ( clone_Exp(p->u.eplus_.exp_1)
+      , clone_Exp(p->u.eplus_.exp_2)
+      );
+
+  case is_Eminus:
+    return make_Eminus
+      ( clone_Exp(p->u.eminus_.exp_1)
+      , clone_Exp(p->u.eminus_.exp_2)
+      );
+
+  case is_Etimes:
+    return make_Etimes
+      ( clone_Exp(p->u.etimes_.exp_1)
+      , clone_Exp(p->u.etimes_.exp_2)
+      );
+
+  case is_Ediv:
+    return make_Ediv
+      ( clone_Exp(p->u.ediv_.exp_1)
+      , clone_Exp(p->u.ediv_.exp_2)
+      );
+
+  case is_Emod:
+    return make_Emod
+      ( clone_Exp(p->u.emod_.exp_1)
+      , clone_Exp(p->u.emod_.exp_2)
+      );
+
+  case is_Epreinc:
+    return make_Epreinc (clone_Exp(p->u.epreinc_.exp_));
+
+  case is_Epredec:
+    return make_Epredec (clone_Exp(p->u.epredec_.exp_));
+
+  case is_Earray:
+    return make_Earray
+      ( clone_Exp(p->u.earray_.exp_1)
+      , clone_Exp(p->u.earray_.exp_2)
+      );
+
+  case is_Efunk:
+    return make_Efunk (clone_Exp(p->u.efunk_.exp_));
+
+  case is_Efunkpar:
+    return make_Efunkpar
+      ( clone_Exp(p->u.efunkpar_.exp_1)
+      , clone_Exp(p->u.efunkpar_.exp_2)
+      );
+
+  case is_Eselect:
+    return make_Eselect
+      ( clone_Exp(p->u.eselect_.exp_)
+      , strdup(p->u.eselect_.ident_)
+      );
+
+  case is_Epoint:
+    return make_Epoint
+      ( clone_Exp(p->u.epoint_.exp_)
+      , strdup(p->u.epoint_.ident_)
+      );
+
+  case is_Epostinc:
+    return make_Epostinc (clone_Exp(p->u.epostinc_.exp_));
+
+  case is_Epostdec:
+    return make_Epostdec (clone_Exp(p->u.epostdec_.exp_));
+
+  case is_Evar:
+    return make_Evar (strdup(p->u.evar_.ident_));
+
+  case is_Econst:
+    return make_Econst (clone_Constant(p->u.econst_.constant_));
+
+  case is_Estring:
+    return make_Estring (strdup(p->u.estring_.string_));
 
   default:
     fprintf(stderr, "Error: bad kind field when cloning Exp!\n");
@@ -756,6 +1448,49 @@ Procedure clone_Procedure(Procedure p)
 
   default:
     fprintf(stderr, "Error: bad kind field when cloning Procedure!\n");
+    exit(1);
+  }
+}
+
+Assignment_op clone_Assignment_op(Assignment_op p)
+{
+  switch(p->kind)
+  {
+  case is_Assign:
+    return make_Assign ();
+
+  case is_AssignMul:
+    return make_AssignMul ();
+
+  case is_AssignDiv:
+    return make_AssignDiv ();
+
+  case is_AssignMod:
+    return make_AssignMod ();
+
+  case is_AssignAdd:
+    return make_AssignAdd ();
+
+  case is_AssignSub:
+    return make_AssignSub ();
+
+  case is_AssignLeft:
+    return make_AssignLeft ();
+
+  case is_AssignRight:
+    return make_AssignRight ();
+
+  case is_AssignAnd:
+    return make_AssignAnd ();
+
+  case is_AssignXor:
+    return make_AssignXor ();
+
+  case is_AssignOr:
+    return make_AssignOr ();
+
+  default:
+    fprintf(stderr, "Error: bad kind field when cloning Assignment_op!\n");
     exit(1);
   }
 }
@@ -975,27 +1710,27 @@ void free_Cmd_type(Cmd_type p)
 
   case is_Cmd_assign:
     free_Variable(p->u.cmd_assign_.variable_);
-    free_Exprecion(p->u.cmd_assign_.exprecion_);
+    free_Exp(p->u.cmd_assign_.exp_);
     break;
 
   case is_Cmd_while:
-    free_Exprecion(p->u.cmd_while_.exprecion_);
+    free_Exp(p->u.cmd_while_.exp_);
     free_Cmdlist(p->u.cmd_while_.cmdlist_);
     break;
 
   case is_Cmd_for:
-    free_Exprecion(p->u.cmd_for_.exprecion_);
+    free_Exp(p->u.cmd_for_.exp_);
     free_Cmdlist(p->u.cmd_for_.cmdlist_);
     break;
 
   case is_Cmd_if:
-    free_Exprecion(p->u.cmd_if_.exprecion_);
+    free_Exp(p->u.cmd_if_.exp_);
     free_Cmdlist(p->u.cmd_if_.cmdlist_1);
     free_Cmdlist(p->u.cmd_if_.cmdlist_2);
     break;
 
   case is_Cmd_output:
-    free_Exprecion(p->u.cmd_output_.exprecion_);
+    free_Exp(p->u.cmd_output_.exp_);
     break;
 
   default:
@@ -1005,53 +1740,167 @@ void free_Cmd_type(Cmd_type p)
   free(p);
 }
 
-void free_Exprecion(Exprecion p)
-{
-  switch(p->kind)
-  {
-  case is_Exprecion:
-    free_Exp(p->u.exprecion_.exp_);
-    break;
-
-  default:
-    fprintf(stderr, "Error: bad kind field when freeing Exprecion!\n");
-    exit(1);
-  }
-  free(p);
-}
-
 void free_Exp(Exp p)
 {
   switch(p->kind)
   {
-  case is_Expeq:
-    free_Exp(p->u.expeq_.exp_1);
-    free_Exp(p->u.expeq_.exp_2);
+  case is_Ecomma:
+    free_Exp(p->u.ecomma_.exp_1);
+    free_Exp(p->u.ecomma_.exp_2);
     break;
 
-  case is_Expenq:
-    free_Exp(p->u.expenq_.exp_1);
-    free_Exp(p->u.expenq_.exp_2);
+  case is_Eassign:
+    free_Exp(p->u.eassign_.exp_1);
+    free_Assignment_op(p->u.eassign_.assignment_op_);
+    free_Exp(p->u.eassign_.exp_2);
     break;
 
-  case is_Expmaior:
-    free_Exp(p->u.expmaior_.exp_1);
-    free_Exp(p->u.expmaior_.exp_2);
+  case is_Econdition:
+    free_Exp(p->u.econdition_.exp_1);
+    free_Exp(p->u.econdition_.exp_2);
+    free_Exp(p->u.econdition_.exp_3);
     break;
 
-  case is_Expmenor:
-    free_Exp(p->u.expmenor_.exp_1);
-    free_Exp(p->u.expmenor_.exp_2);
+  case is_Elor:
+    free_Exp(p->u.elor_.exp_1);
+    free_Exp(p->u.elor_.exp_2);
     break;
 
-  case is_Expmaioreq:
-    free_Exp(p->u.expmaioreq_.exp_1);
-    free_Exp(p->u.expmaioreq_.exp_2);
+  case is_Eland:
+    free_Exp(p->u.eland_.exp_1);
+    free_Exp(p->u.eland_.exp_2);
     break;
 
-  case is_Expmenoreq:
-    free_Exp(p->u.expmenoreq_.exp_1);
-    free_Exp(p->u.expmenoreq_.exp_2);
+  case is_Ebitor:
+    free_Exp(p->u.ebitor_.exp_1);
+    free_Exp(p->u.ebitor_.exp_2);
+    break;
+
+  case is_Ebitexor:
+    free_Exp(p->u.ebitexor_.exp_1);
+    free_Exp(p->u.ebitexor_.exp_2);
+    break;
+
+  case is_Ebitand:
+    free_Exp(p->u.ebitand_.exp_1);
+    free_Exp(p->u.ebitand_.exp_2);
+    break;
+
+  case is_Eeq:
+    free_Exp(p->u.eeq_.exp_1);
+    free_Exp(p->u.eeq_.exp_2);
+    break;
+
+  case is_Eneq:
+    free_Exp(p->u.eneq_.exp_1);
+    free_Exp(p->u.eneq_.exp_2);
+    break;
+
+  case is_Elthen:
+    free_Exp(p->u.elthen_.exp_1);
+    free_Exp(p->u.elthen_.exp_2);
+    break;
+
+  case is_Egrthen:
+    free_Exp(p->u.egrthen_.exp_1);
+    free_Exp(p->u.egrthen_.exp_2);
+    break;
+
+  case is_Ele:
+    free_Exp(p->u.ele_.exp_1);
+    free_Exp(p->u.ele_.exp_2);
+    break;
+
+  case is_Ege:
+    free_Exp(p->u.ege_.exp_1);
+    free_Exp(p->u.ege_.exp_2);
+    break;
+
+  case is_Eleft:
+    free_Exp(p->u.eleft_.exp_1);
+    free_Exp(p->u.eleft_.exp_2);
+    break;
+
+  case is_Eright:
+    free_Exp(p->u.eright_.exp_1);
+    free_Exp(p->u.eright_.exp_2);
+    break;
+
+  case is_Eplus:
+    free_Exp(p->u.eplus_.exp_1);
+    free_Exp(p->u.eplus_.exp_2);
+    break;
+
+  case is_Eminus:
+    free_Exp(p->u.eminus_.exp_1);
+    free_Exp(p->u.eminus_.exp_2);
+    break;
+
+  case is_Etimes:
+    free_Exp(p->u.etimes_.exp_1);
+    free_Exp(p->u.etimes_.exp_2);
+    break;
+
+  case is_Ediv:
+    free_Exp(p->u.ediv_.exp_1);
+    free_Exp(p->u.ediv_.exp_2);
+    break;
+
+  case is_Emod:
+    free_Exp(p->u.emod_.exp_1);
+    free_Exp(p->u.emod_.exp_2);
+    break;
+
+  case is_Epreinc:
+    free_Exp(p->u.epreinc_.exp_);
+    break;
+
+  case is_Epredec:
+    free_Exp(p->u.epredec_.exp_);
+    break;
+
+  case is_Earray:
+    free_Exp(p->u.earray_.exp_1);
+    free_Exp(p->u.earray_.exp_2);
+    break;
+
+  case is_Efunk:
+    free_Exp(p->u.efunk_.exp_);
+    break;
+
+  case is_Efunkpar:
+    free_Exp(p->u.efunkpar_.exp_1);
+    free_Exp(p->u.efunkpar_.exp_2);
+    break;
+
+  case is_Eselect:
+    free_Exp(p->u.eselect_.exp_);
+    free(p->u.eselect_.ident_);
+    break;
+
+  case is_Epoint:
+    free_Exp(p->u.epoint_.exp_);
+    free(p->u.epoint_.ident_);
+    break;
+
+  case is_Epostinc:
+    free_Exp(p->u.epostinc_.exp_);
+    break;
+
+  case is_Epostdec:
+    free_Exp(p->u.epostdec_.exp_);
+    break;
+
+  case is_Evar:
+    free(p->u.evar_.ident_);
+    break;
+
+  case is_Econst:
+    free_Constant(p->u.econst_.constant_);
+    break;
+
+  case is_Estring:
+    free(p->u.estring_.string_);
     break;
 
   default:
@@ -1073,6 +1922,50 @@ void free_Procedure(Procedure p)
 
   default:
     fprintf(stderr, "Error: bad kind field when freeing Procedure!\n");
+    exit(1);
+  }
+  free(p);
+}
+
+void free_Assignment_op(Assignment_op p)
+{
+  switch(p->kind)
+  {
+  case is_Assign:
+    break;
+
+  case is_AssignMul:
+    break;
+
+  case is_AssignDiv:
+    break;
+
+  case is_AssignMod:
+    break;
+
+  case is_AssignAdd:
+    break;
+
+  case is_AssignSub:
+    break;
+
+  case is_AssignLeft:
+    break;
+
+  case is_AssignRight:
+    break;
+
+  case is_AssignAnd:
+    break;
+
+  case is_AssignXor:
+    break;
+
+  case is_AssignOr:
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when freeing Assignment_op!\n");
     exit(1);
   }
   free(p);
